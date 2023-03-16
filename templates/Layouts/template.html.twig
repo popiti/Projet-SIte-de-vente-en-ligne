@@ -1,0 +1,17 @@
+{% extends 'Layouts/base.html.twig' %}
+
+{% block body %}
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Cours Complets</a></li>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">A propos</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div>
+        {% block contenu %}Message par défaut{% endblock %}
+    </div>
+{% endblock %}
