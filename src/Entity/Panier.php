@@ -19,8 +19,6 @@ class Panier
     #[ORM\JoinColumn(nullable: false)]
     private ?user $userId = null;
 
-    #[ORM\ManyToMany(targetEntity: article::class, inversedBy: 'panierId')]
-    private Collection $articleId;
 
     public function __construct()
     {
@@ -40,30 +38,6 @@ class Panier
     public function setUserId(utilisateur $userId): self
     {
         $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, article>
-     */
-    public function getPanierId(): Collection
-    {
-        return $this->panierId;
-    }
-
-    public function addPanierId(article $panierId): self
-    {
-        if (!$this->panierId->contains($panierId)) {
-            $this->panierId->add($panierId);
-        }
-
-        return $this;
-    }
-
-    public function removePanierId(article $panierId): self
-    {
-        $this->panierId->removeElement($panierId);
 
         return $this;
     }

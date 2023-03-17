@@ -22,8 +22,10 @@ class Commande
     #[ORM\JoinColumn(nullable: false)]
     private ?user $userId = null;
 
-    #[ORM\ManyToMany(targetEntity: Article::class, mappedBy: 'commandeId')]
+    #[ORM\OneToMany(mappedBy: 'commandId', targetEntity: CommandeArticle::class)]
     private Collection $articleId;
+
+
 
     public function __construct()
     {
@@ -60,29 +62,33 @@ class Commande
     }
 
     /**
-     * @return Collection<int, Article>
+     * @return Collection<int, CommandeArticle>
      */
     public function getArticleId(): Collection
     {
         return $this->articleId;
     }
 
-    public function addArticleId(Article $articleId): self
+    public function addArticleId(CommandeArticle $articleId): self
     {
         if (!$this->articleId->contains($articleId)) {
             $this->articleId->add($articleId);
-            $articleId->addCommandeId($this);
+            $articleId->setCommandId($this);
         }
 
         return $this;
     }
 
-    public function removeArticleId(Article $articleId): self
+    public function removeArticleId(CommandeArticle $articleId): self
     {
         if ($this->articleId->removeElement($articleId)) {
-            $articleId->removeCommandeId($this);
+            // set the owning side to null (unless already changed)
+            if ($articleId->getCommandId() === $this) {
+                $articleId->setCommandId(null);
+            }
         }
 
         return $this;
     }
+
 }

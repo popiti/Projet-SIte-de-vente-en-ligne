@@ -23,5 +23,3 @@
 # exclusion du répertoire de configuratrion de PHPStorm
 .idea
 
-# exclusion du répertoire des bases de données SQLite
-/database

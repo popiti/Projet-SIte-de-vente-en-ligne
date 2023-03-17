@@ -1,0 +1,28 @@
+{% extends 'Layouts/template.html.twig' %}
+
+
+{% block contenu %}
+    <table>
+        <thead>
+            <tr>
+                <th> Libelle </th>
+                <th> Stock </th>
+                <th> Prix unitaire </th>
+                <th> Quantite </th>
+                <th> Modification </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td> {{ article.nom }} </td>
+                <td> {{ article.quantite }}</td>
+                <td> {{ article.prix }} </td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -8,10 +8,16 @@
                 <li><a href="#">Articles</a></li>
                 <li><a href="#">Contact</a></li>
                 <li><a href="#">A propos</a></li>
+                <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
             </ul>
         </nav>
     </header>
+<div>
+    <h1>Bonjour</h1>
+</div>
     <div>
         {% block contenu %}Message par défaut{% endblock %}
     </div>
+
+
 {% endblock %}

@@ -12,9 +12,11 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     </head>
     <body>
     <h1></h1>
         {% block body %}{% endblock %}
+    {% include 'Layouts/footer.html.twig' %}
     </body>
 </html>

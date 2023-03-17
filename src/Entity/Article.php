@@ -24,12 +24,6 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?int $prix = null;
 
-    #[ORM\ManyToMany(targetEntity: Commande::class, inversedBy: 'articleId')]
-    private Collection $commandeId;
-
-    #[ORM\ManyToMany(targetEntity: Panier::class, mappedBy: 'panierId')]
-    private Collection $panierId;
-
     public function __construct()
     {
         $this->commandeId = new ArrayCollection();
@@ -77,54 +71,5 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandeId(): Collection
-    {
-        return $this->commandeId;
-    }
 
-    public function addCommandeId(Commande $commandeId): self
-    {
-        if (!$this->commandeId->contains($commandeId)) {
-            $this->commandeId->add($commandeId);
-        }
-
-        return $this;
-    }
-
-    public function removeCommandeId(Commande $commandeId): self
-    {
-        $this->commandeId->removeElement($commandeId);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Panier>
-     */
-    public function getPanierId(): Collection
-    {
-        return $this->panierId;
-    }
-
-    public function addPanierId(Panier $panierId): self
-    {
-        if (!$this->panierId->contains($panierId)) {
-            $this->panierId->add($panierId);
-            $panierId->addPanierId($this);
-        }
-
-        return $this;
-    }
-
-    public function removePanierId(Panier $panierId): self
-    {
-        if ($this->panierId->removeElement($panierId)) {
-            $panierId->removePanierId($this);
-        }
-
-        return $this;
-    }
 }
