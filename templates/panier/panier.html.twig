@@ -1,0 +1,28 @@
+{% extends 'Layouts/template.html.twig' %}
+
+
+{% block contenu %}
+    <table>
+        <thead class ="row">
+        <tr>
+            <th> Libelle </th>
+            <th> Quantite </th>
+            <th> Prix unitaire </th>
+            <th> Total </th>
+            <th> Action </th>
+        </tr>
+        </thead>
+        <tbody class ="col">
+        {% for article in paniers %}
+            <tr>
+                <td> {{ article.articleId.nom }} </td>
+                <td> {{ article.quantite }} </td>
+                <td> {{ article.articleId.prix }} </td>
+                <td> {{ article.articleId.prix * article.quantite }}  </td>
+                <td><a href="{{ path ('panier_delete',{ id:article.id }) }}">Supprimer</a>  </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller\Sandbox;
 use App\Entity\Article;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,6 +20,6 @@ class ArticleController extends AbstractController
             'articles'=> $articles,
         );
         return $this->render('article/index.html.twig',$args );
-    }
 
+    }
 }

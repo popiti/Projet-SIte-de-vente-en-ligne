@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
+use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Sodium\add;
 
 class RegistrationController extends AbstractController
 {
@@ -31,9 +33,19 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setNom(
+                $form->get('nom')->getData()
+            );
+            $user->setPrenom(
+                $form->get('prenom')->getData()
+            );
+            $user->setBirthdate(
+                $form->get('birthdate')->getData()
+            );
 
             $entityManager->persist($user);
             $entityManager->flush();
+            dump($user);
             // do anything else you need here, like send an email
 
             return $userAuthenticator->authenticateUser(

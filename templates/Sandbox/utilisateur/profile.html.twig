@@ -1,11 +1,11 @@
 {% extends 'Layouts/base.html.twig'%}
 
-{% block title %} Register {% endblock %}
+{% block title %} Profile {% endblock %}
 
 {% block body %}
-    <h1 class = "centrer">Register</h1>
+    <h1 class = "centrer">Mon Profile</h1>
     <div class = "centrer">
-    {{ form_start(registrationForm) }}
+        {{ form_start(registrationForm) }}
         {{ form_label(registrationForm.login) }}
         <br>
         {{ form_widget(registrationForm.login) }}
@@ -28,6 +28,6 @@
         <br>
         {{ form_widget(registrationForm.birthdate) }}
         <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

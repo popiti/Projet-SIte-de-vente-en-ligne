@@ -15,9 +15,16 @@ class Panier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $articleId = null;
+
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?user $userId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $quantite = null;
 
 
     public function __construct()
@@ -38,6 +45,29 @@ class Panier
     public function setUserId(utilisateur $userId): self
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+    public function getArticleId(): ?Article
+    {
+        return $this->articleId;
+    }
+
+    public function setArticleId(?Article $articleId): self
+    {
+        $this->articleId = $articleId;
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(?int $quantite): self
+    {
+        $this->quantite = $quantite;
 
         return $this;
     }

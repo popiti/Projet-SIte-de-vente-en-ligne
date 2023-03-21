@@ -37,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $brithdate = null;
+    private ?\DateTimeInterface $birthdate = null;
 
     public function getId(): ?int
     {
@@ -145,15 +145,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBrithdate(): ?\DateTimeInterface
+    public function getBirthdate(): ?\DateTimeInterface
     {
-        return $this->brithdate;
+        return $this->birthdate;
     }
 
-    public function setBrithdate(?\DateTimeInterface $brithdate): self
+    public function setBirthdate(?\DateTimeInterface $birthdate): self
     {
-        $this->brithdate = $brithdate;
-
+        $this->birthdate = $birthdate;
         return $this;
     }
 }

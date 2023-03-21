@@ -3,23 +3,25 @@
 
 {% block contenu %}
     <table>
-        <thead>
+        <thead class ="row">
             <tr>
                 <th> Libelle </th>
                 <th> Stock </th>
                 <th> Prix unitaire </th>
                 <th> Quantite </th>
+                <th> Ajouter au panier </th>
                 <th> Modification </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class ="col">
         {% for article in articles %}
             <tr>
                 <td> {{ article.nom }} </td>
-                <td> {{ article.quantite }}</td>
+                <td> {{ article.quantite }} </td>
                 <td> {{ article.prix }} </td>
-                <td></td>
-                <td></td>
+                <td>  {{ }}                  </td>
+                <td> <button class ="button button2">Ajouter</button>  </td>
+                <td> <button class ="button button1">Modifier</button>  </td>
             </tr>
         {% endfor %}
         </tbody>
