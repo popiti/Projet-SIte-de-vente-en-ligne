@@ -2,16 +2,22 @@
 
 {% block body %}
     {% if app.user %}
-    <header>
+        <header>
         <nav>
             <ul>
-                {# <li><a href="#">Mes commandes</a></li>  #}
-                <li><a href="{{ path('app_sandbox_panier') }}">Mon Panier</a></li>
-                <li><a href="{{ path('app_sandbox_profile',{id:app.user.id}) }}">Profil</a></li>
-                <li><a href="{{ path('app_sandbox_article') }}">Liste des articles</a></li>
-                <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
+                <li><a href="{{ path('app_home') }}">Page d'acceuil</a></li>
+            {% if (app.user.roles[0]== "ROLE_ADMIN") %}
                 <li><a href="{{ path('app_sandbox_listclient') }}">Users</a></li>
+            {% endif %}
+            {% if (app.user.roles[0]== "ROLE_SUPERADMIN") %}
                 <li><a href="{{ path('app_sandbox_listadmin') }}">Admins</a></li>
+            {% endif %}
+            {% if (app.user.roles[0]== "ROLE_USER") or (app.user.roles[0]== "ROLE_ADMIN")  %}
+                <li><a href="{{ path('panier_list') }}">Mon Panier ({{ dump(lien.getLien()) }} )</a></li>
+                <li><a href="{{ path('app_sandbox_profile',{id:app.user.id}) }}">Profil</a></li>
+                <li><a href="{{ path('app_sandbox_listarticle') }}">Liste des articles</a></li>
+                <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
+            {% endif %}
             </ul>
         </nav>
     </header>
@@ -19,7 +25,15 @@
 <div>
     <h1>Bonjour</h1>
 </div>
-    <div>
+    <div>{# Ajout d'un flash #}
+        {% if app.session.flashBag.has('info') %}
+            <strong>Message d'information</strong>
+            <ul>
+                {% for msg in app.session.flashBag.get('info') %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% block contenu %}Message par défaut{% endblock %}
     </div>
 {% endblock %}

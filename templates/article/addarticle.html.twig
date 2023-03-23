@@ -1,0 +1,26 @@
+{% extends 'Layouts/template.html.twig'%}
+
+{% block title %} Ajouter un article {% endblock %}
+
+{% block contenu %}
+    <h1 class = "centrer">Ajouter un article</h1>
+    <div class = "centrer">
+        {{ form_start(addArticle) }}
+        {{ form_label(addArticle.nom) }}
+        <br>
+        {{ form_widget(addArticle.nom) }}
+        <br>
+        {{ form_label(addArticle.quantite) }}
+        <br>
+        {{ form_widget(addArticle.quantite, {
+            label: 'Password'
+        }) }}
+        <br>
+        {{ form_label(addArticle.prix) }}
+        <br>
+        {{ form_widget(addArticle.prix) }}
+        <br>
+        <button type="submit" class="btn">Ajouter</button>
+        {{ form_end(addArticle) }}
+    </div>
+{% endblock %}

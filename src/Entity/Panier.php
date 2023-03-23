@@ -37,12 +37,12 @@ class Panier
         return $this->id;
     }
 
-    public function getUserId(): ?utilisateur
+    public function getUserId(): ?user
     {
         return $this->userId;
     }
 
-    public function setUserId(utilisateur $userId): self
+    public function setUserId(user $userId): self
     {
         $this->userId = $userId;
 

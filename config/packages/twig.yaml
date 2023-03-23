@@ -1,5 +1,9 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        # To define a service as a global Twig variable, prefix the string with @.
+        lien: '@AppBundle\Service\LienPanier'
+
 
 when@test:
     twig:

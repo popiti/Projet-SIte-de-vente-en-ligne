@@ -25,6 +25,7 @@
             {% endfor %}
             </tbody>
         </table>
-
-    {% endblock %}
+    {% if app.user.roles[0]=='ROLE_ADMIN' %}
+        <a class="button button2" href="{{ path('app_sandbox_addarticle') }}">Ajouter</a>
+    {% endif %}
 {% endblock %}

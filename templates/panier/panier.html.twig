@@ -2,6 +2,7 @@
 
 
 {% block contenu %}
+    {% if paniers %}
     <table>
         <thead class ="row">
         <tr>
@@ -13,7 +14,9 @@
         </tr>
         </thead>
         <tbody class ="col">
+        {% set somme = 0 %}
         {% for article in paniers %}
+            {% set somme = somme+ (article.quantite*article.articleId.prix) %}
             <tr>
                 <td> {{ article.articleId.nom }} </td>
                 <td> {{ article.quantite }} </td>
@@ -24,5 +27,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+        <br>
+        <li>Total Panier = {{ somme }} Or</li>
+        <a class="button button1" href="{{ path('panier_vider') }}">Vider</a>
+        <a class="button button2" href="{{ path('panier_valider') }}">Commander</a>
+    {% endif %}
 {% endblock %}

@@ -1,8 +1,8 @@
-{% extends 'Layouts/base.html.twig'%}
+{% extends 'Layouts/template.html.twig'%}
 
 {% block title %} Profile {% endblock %}
 
-{% block body %}
+{% block contenu %}
     <h1 class = "centrer">Modification Client {{ app.user.nom }}</h1>
     <div class = "centrer">
         {{ form_start(registrationForm) }}
