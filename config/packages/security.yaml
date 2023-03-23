@@ -34,11 +34,13 @@ security:
     role_hierarchy :
         ROLE_ADMIN : ROLE_USER
     access_control:
-         - { path: ^/sandbox, roles: ROLE_ADMIN }
          - { path: ^/sandbox/admin},      roles : ROLE_SUPERADMIN }
          - { path: ^/sandbox/superAdmin,  roles: ROLE_SUPERADMIN }
+         - { path: ^/sandbox/profile, roles: ROLE_SUPERADMIN }
+         - { path: ^/sandbox/article, roles: ROLE_USER }
          - { path: ^/sandbox/profile, roles: ROLE_USER }
-
+         - { path: ^/sandbox/article, roles: ROLE_USER }
+         - { path: ^/sandbox, roles: ROLE_ADMIN }
 when@test:
     security:
         password_hashers:

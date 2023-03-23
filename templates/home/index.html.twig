@@ -1,0 +1,19 @@
+{% extends 'Layouts/template.html.twig' %}
+
+
+{% block contenu %}
+    {% if app.user %}
+        <h1> Bonjour {{ app.user.nom }} </h1>
+        {% if (app.user.roles[0] == "ROLE_USER") %}
+            <h1> Vous etes un client</h1>
+        {% elseif (app.user.roles[0] == "ROLE_ADMIN")%}
+            <h1> Vous etes un admin</h1>
+        {% elseif (app.user.roles[0] == "ROLE_SUPERADMIN")%}
+            <h1> Vous etes un super-admin</h1>
+        {% endif %}
+    {% else %}
+        <h1>Vous êtes anonyme</h1>
+        <h2><a href="{{ path('app_register') }}">Créer un compte </a></h2>
+        <h2><a href="{{ path('app_login') }}">Se connecter </a></h2>
+    {% endif %}
+{% endblock %}

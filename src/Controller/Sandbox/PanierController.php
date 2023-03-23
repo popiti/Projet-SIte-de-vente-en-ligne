@@ -21,7 +21,7 @@ class PanierController extends AbstractController
     }
 
 
-    #[Route('/sandbox/panier/delete/{id}',name:'panier_delete')]
+    #[Route('/sandbox/panier/delete/{id}',name:'panier_delete',requirements: ['id' => '[1-9]\d*'])]
     public function panierDelete (EntityManagerInterface $em, Panier $id) : Response
     {
         $panierRepo = $em->getRepository(Panier::class);

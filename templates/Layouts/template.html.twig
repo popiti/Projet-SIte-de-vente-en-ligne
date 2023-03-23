@@ -1,26 +1,25 @@
 {% extends 'Layouts/base.html.twig' %}
 
 {% block body %}
+    {% if app.user %}
     <header>
         <nav>
             <ul>
-                <li><a href="#">Mes commandes</a></li>
-                <li><a href="#">Panier</a></li>
-                <li><a href="#">Profil</a></li>
-                <li><a href="{{ path('app_sandbox_article') }}">Liste des produits</a></li>
+                {# <li><a href="#">Mes commandes</a></li>  #}
+                <li><a href="{{ path('app_sandbox_panier') }}">Mon Panier</a></li>
+                <li><a href="{{ path('app_sandbox_profile',{id:app.user.id}) }}">Profil</a></li>
+                <li><a href="{{ path('app_sandbox_article') }}">Liste des articles</a></li>
                 <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
-                <li><a href="#">Historique</a></li>
-                <li><a href="#">Users</a></li>
-                <li><a href="#">Admins</a></li>
+                <li><a href="{{ path('app_sandbox_listclient') }}">Users</a></li>
+                <li><a href="{{ path('app_sandbox_listadmin') }}">Admins</a></li>
             </ul>
         </nav>
     </header>
+    {% endif %}
 <div>
     <h1>Bonjour</h1>
 </div>
     <div>
         {% block contenu %}Message par défaut{% endblock %}
     </div>
-
-
 {% endblock %}

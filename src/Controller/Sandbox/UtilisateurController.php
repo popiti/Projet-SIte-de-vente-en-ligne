@@ -18,7 +18,7 @@ use function PHPUnit\Framework\throwException;
 #[Route('/sandbox', name: 'app_sandbox')]
 class UtilisateurController extends AbstractController
 {
-    #[Route('/profile/{id}', name: '_profile')]
+    #[Route('/profile/{id}', name: '_profile', requirements: ['id' => '[1-9]\d*'])]
     public function profile(Request $request,UserPasswordHasherInterface $userPasswordHasher,UserAuthenticatorInterface
     $userAuthenticator,LoginAuthenticator $authenticator ,EntityManagerInterface $em,int $id): Response
     {
@@ -29,11 +29,7 @@ class UtilisateurController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            if (is_null($form->get('plainPassword')->getData()))
-            {
-
-            }
-            else
+            if (!is_null($form->get('plainPassword')->getData()))
             {
                 $users->setPassword(
                     $userPasswordHasher->hashPassword(
@@ -56,4 +52,73 @@ class UtilisateurController extends AbstractController
         return $this->render('/Sandbox/utilisateur/profile.html.twig', $args);
     }
 
+    #[Route('/client',name: '_listclient')]
+    public function listClient(EntityManagerInterface $em) : Response
+    {
+        $usersRepo = $em->getRepository(User::class);
+        $users = $usersRepo->findByRole("[]");
+
+        $args=array(
+        'users'=>$users
+        );
+        return $this->render('sandbox/utilisateur/client.html.twig',$args);
+    }
+
+    #[Route('/listadmin',name: '_listadmin')]
+    public function listAdmin(EntityManagerInterface $em) : Response
+    {
+        $usersRepo = $em->getRepository(User::class);
+        $users = $usersRepo->findByRole("ROLE_ADMIN");
+
+        $args=array(
+            'users'=>$users
+        );
+        return $this->render('superadmin/admin.html.twig',$args);
+    }
+
+    #[Route('/modifclient/{id}', name: '_modifclient', requirements : ['id' => '[1-9]\d*'])]
+    public function modifclientAction(EntityManagerInterface $em,Request $request, UserPasswordHasherInterface $userPasswordHasher, int $id) : Response
+    {
+        $usersRepo = $em->getRepository(User::class);
+        $users  = $usersRepo->find($id);
+        $form = $this->createForm(MonProfile::class, $users);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            if (!is_null($form->get('plainPassword')->getData()))
+            {
+                $users->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $users,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+            }
+            $em->persist($users);
+            $em->flush();
+            // do anything else you need here, like send an email
+            return $this->redirectToRoute("app_sandbox_listclient");
+        }
+        if (is_null($users))
+        {
+            //$this->addFlash('info', 'suppression film' . $id . 'reussie');
+            throw new NotFoundHttpException('utilisateur' . $id . 'not found');
+        }
+        $args = array(
+            'id'=>$id,'registrationForm'=>$form->createView(),
+        );
+        return $this->render('Sandbox/utilisateur/modifclient.html.twig',$args);
+    }
+
+    #[Route('/deleteclient/{id}',name: '_deleteclient', requirements: ['id'=>'[1-9]\d*'])]
+    public function deleteclientAction(EntityManagerInterface $em, int $id): Response
+    {
+        $usersRepo = $em->getRepository(User::class);
+        $users = $usersRepo->find($id);
+
+        $em->remove($users);
+        $em->flush();
+        return $this->redirectToRoute('app_sandbox_listclient');
+    }
 }

@@ -1,0 +1,33 @@
+{% extends 'Layouts/base.html.twig'%}
+
+{% block title %} Profile {% endblock %}
+
+{% block body %}
+    <h1 class = "centrer">Modification Client {{ app.user.nom }}</h1>
+    <div class = "centrer">
+        {{ form_start(registrationForm) }}
+        {{ form_label(registrationForm.login) }}
+        <br>
+        {{ form_widget(registrationForm.login) }}
+        <br>
+        {{ form_label(registrationForm.plainPassword) }}
+        <br>
+        {{ form_widget(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        <br>
+        {{ form_label(registrationForm.nom) }}
+        <br>
+        {{ form_widget(registrationForm.nom) }}
+        <br>
+        {{ form_label(registrationForm.prenom) }}
+        <br>
+        {{ form_widget(registrationForm.prenom) }}
+        <br>
+        {{ form_label(registrationForm.birthdate) }}
+        <br>
+        {{ form_widget(registrationForm.birthdate) }}
+        <button type="submit" class="btn">Register</button>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

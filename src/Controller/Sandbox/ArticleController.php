@@ -19,7 +19,7 @@ class ArticleController extends AbstractController
         $args = array(
             'articles'=> $articles,
         );
-        return $this->render('article/index.html.twig',$args );
+        return $this->render('article/client.html.twig',$args );
 
     }
 }

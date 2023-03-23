@@ -1,0 +1,33 @@
+{% extends 'Layouts/base.html.twig'%}
+
+{% block title %} Register {% endblock %}
+
+{% block body %}
+    <h1 class = "centrer">Register Admin</h1>
+    <div class = "centrer">
+        {{ form_start(registrationAdmin) }}
+        {{ form_label(registrationAdmin.login) }}
+        <br>
+        {{ form_widget(registrationAdmin.login) }}
+        <br>
+        {{ form_label(registrationAdmin.plainPassword) }}
+        <br>
+        {{ form_widget(registrationAdmin.plainPassword, {
+            label: 'Password'
+        }) }}
+        <br>
+        {{ form_label(registrationAdmin.nom) }}
+        <br>
+        {{ form_widget(registrationAdmin.nom) }}
+        <br>
+        {{ form_label(registrationAdmin.prenom) }}
+        <br>
+        {{ form_widget(registrationAdmin.prenom) }}
+        <br>
+        {{ form_label(registrationAdmin.birthdate) }}
+        <br>
+        {{ form_widget(registrationAdmin.birthdate) }}
+        <button type="submit" class="btn">Register</button>
+        {{ form_end(registrationAdmin) }}
+    </div>
+{% endblock %}

@@ -155,4 +155,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->birthdate = $birthdate;
         return $this;
     }
+
 }

@@ -1,9 +1,17 @@
-{% extends 'Layouts/base.html.twig' %}
+{% extends 'Layouts/template.html.twig' %}
 
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ path('app_register') }}">S'inscrire</a></li>
+            </ul>
+        </nav>
+    </header>
+    <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
