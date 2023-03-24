@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ArticleController extends AbstractController
 {
     #[Route('/listarticle', name: '_listarticle')]
+    
     public function listearticleAction(EntityManagerInterface $em, Request $request): Response
     {
         $articleRepo = $em->getRepository(Article::class);
@@ -48,7 +49,7 @@ class ArticleController extends AbstractController
                     },
                 ))
                 ->add('articleId', HiddenType::class, ['data' => $article->getId()])
-                ->add('modifier', SubmitType::class)
+                ->add('Modifier', SubmitType::class)
                 ->getForm();
             $forms[] = $form;
             $views[$article->getId()] = $form->createView();
@@ -140,7 +141,8 @@ class ArticleController extends AbstractController
             dump($article);
             $em->persist($article);
             $em->flush();
-            return $this->redirectToRoute('app_sandbox_listarticle');
+            $this->addFlash('info','Ajout d\'un article réussi');
+            return $this->redirectToRoute('app_home');
         }
         $args = array(
             'addArticle'=>$form->createView(),

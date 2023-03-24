@@ -19,7 +19,7 @@ security:
             custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
-                target: app_login
+                target: app_logoutmsg
                 # where to redirect after logout
                 # target: app_any_route
 
@@ -32,15 +32,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     role_hierarchy :
-        ROLE_ADMIN : ROLE_USER
+        ROLE_ADMIN : ROLE_CLIENT
     access_control:
-         - { path: ^/sandbox/admin},      roles : ROLE_SUPERADMIN }
-         - { path: ^/sandbox/superAdmin,  roles: ROLE_SUPERADMIN }
-         - { path: ^/sandbox/profile, roles: ROLE_SUPERADMIN }
-         - { path: ^/sandbox/article, roles: ROLE_USER }
-         - { path: ^/sandbox/profile, roles: ROLE_USER }
-         - { path: ^/sandbox/article, roles: ROLE_USER }
-         - { path: ^/sandbox, roles: ROLE_ADMIN }
+         - { path: ^/superadmin/,       roles: ROLE_SUPERADMIN }
+         - { path: ^/sandbox/client,      roles: ROLE_ADMIN }
+         - { path: ^/sandbox/addarticle,  roles: ROLE_ADMIN }
+         - { path: ^/sandbox/listarticle, roles: ROLE_CLIENT }
+         - { path: ^/sandbox/,            roles: ROLE_CLIENT }
+
 when@test:
     security:
         password_hashers:

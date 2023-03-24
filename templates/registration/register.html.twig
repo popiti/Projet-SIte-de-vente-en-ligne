@@ -3,15 +3,25 @@
 {% block title %} Register {% endblock %}
 
 {% block body %}
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ path('app_login') }}">Se connecter</a></li>
+                <li><a href="{{ path('app_home') }}">Page d'acceuil</a></li>
+            </ul>
+        </nav>
+    </header>
     <h1 class = "centrer">Register</h1>
     <div class = "centrer">
     {{ form_start(registrationForm) }}
         {{ form_label(registrationForm.login) }}
         <br>
+        {{ form_errors(registrationForm.login) }}
         {{ form_widget(registrationForm.login) }}
         <br>
         {{ form_label(registrationForm.plainPassword) }}
         <br>
+        {{ form_errors(registrationForm.plainPassword) }}
         {{ form_widget(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
@@ -30,4 +40,15 @@
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
     </div>
+    <div>
+        {% if app.session.flashBag.has('info') %}
+            <strong>Message d'information</strong>
+            <ul>
+                {% for msg in app.session.flashBag.get('info') %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
 {% endblock %}

@@ -15,10 +15,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-#[Route('sandbox', name: 'app_superadmin')]
+#[Route('superadmin', name: 'app_superadmin')]
 class SuperadminController extends AbstractController
 {
-    #[Route('/createadmin', name: '_createadmin')]
+    #[Route('/admin/create', name: '_createadmin')]
     public function createAdminAction(EntityManagerInterface $em, Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator): Response
     {
         $user = new User();
@@ -59,7 +59,7 @@ class SuperadminController extends AbstractController
         return $this->render('superadmin/createAdmin.html.twig',$args);
     }
 
-    #[Route('/modifadmin/{id}', name: '_modifadmin',requirements: ['id' => '[1-9]\d*'])]
+    #[Route('/admin/modif/{id}', name: '_modifadmin',requirements: ['id' => '[1-9]\d*'])]
     public function modifAdminAction(EntityManagerInterface $em, Request $request,UserPasswordHasherInterface $userPasswordHasher, int $id): Response
     {
         $userRepo = $em->getRepository(User::class);
@@ -94,7 +94,7 @@ class SuperadminController extends AbstractController
         return $this->render('/superadmin/modifadmin.html.twig', $args);
     }
 
-    #[Route('/deleteadmin/{id}',name:'_deleteadmin',requirements: ['id' => '[1-9]\d*'])]
+    #[Route('/admin/delete/{id}',name:'_deleteadmin',requirements: ['id' => '[1-9]\d*'])]
     public function panierDelete (EntityManagerInterface $em, User $id) : Response
     {
         $usersRepo = $em->getRepository(User::class);

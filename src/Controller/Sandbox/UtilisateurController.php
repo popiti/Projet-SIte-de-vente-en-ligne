@@ -15,14 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use function PHPUnit\Framework\throwException;
 
-#[Route('/sandbox', name: 'app_sandbox')]
 class UtilisateurController extends AbstractController
 {
-    #[Route('/profile/{id}', name: '_profile', requirements: ['id' => '[1-9]\d*'])]
+    #[Route('profile/{id}', name: 'app_sandbox_profile', requirements: ['id' => '[1-9]\d*'])]
     public function profile(Request $request,UserPasswordHasherInterface $userPasswordHasher,UserAuthenticatorInterface
     $userAuthenticator,LoginAuthenticator $authenticator ,EntityManagerInterface $em,int $id): Response
     {
         $userRepo = $em->getRepository(User::class);
+        if($this->getUser()->getId()!=$id)
+        {
+            $id = $this->getUser()->getId();
+        }
         $users = $userRepo->find($id);
         $form = $this->createForm(MonProfile::class, $users);
         $form->handleRequest($request);
@@ -40,8 +43,18 @@ class UtilisateurController extends AbstractController
             }
             $em->persist($users);
             $em->flush();
+            $this->addFlash('info', 'Les informations du compte ont été modifiées');
             // do anything else you need here, like send an email
+            $role = $this->getUser()->getRoles();
+            if($role[0]=="ROLE_SUPERADMIN")
+            {
+                return $this->redirectToRoute("app_home");
+            }
+            else
+            {
+                return $this->redirectToRoute("app_sandbox_listarticle");
 
+            }
         }
         if (is_null($users))
     {
@@ -52,11 +65,11 @@ class UtilisateurController extends AbstractController
         return $this->render('/Sandbox/utilisateur/profile.html.twig', $args);
     }
 
-    #[Route('/client',name: '_listclient')]
+    #[Route('sandbox/client',name: 'app_sandbox_listclient')]
     public function listClient(EntityManagerInterface $em) : Response
     {
         $usersRepo = $em->getRepository(User::class);
-        $users = $usersRepo->findByRole("[]");
+        $users = $usersRepo->findByRole("ROLE_CLIENT");
 
         $args=array(
         'users'=>$users
@@ -64,7 +77,7 @@ class UtilisateurController extends AbstractController
         return $this->render('sandbox/utilisateur/client.html.twig',$args);
     }
 
-    #[Route('/listadmin',name: '_listadmin')]
+    #[Route('superadmin/listadmin',name: 'app_sandbox_listadmin')]
     public function listAdmin(EntityManagerInterface $em) : Response
     {
         $usersRepo = $em->getRepository(User::class);
@@ -76,7 +89,7 @@ class UtilisateurController extends AbstractController
         return $this->render('superadmin/admin.html.twig',$args);
     }
 
-    #[Route('/modifclient/{id}', name: '_modifclient', requirements : ['id' => '[1-9]\d*'])]
+    #[Route('sandbox/client/modifclient/{id}', name: 'app_sandbox_modifclient', requirements : ['id' => '[1-9]\d*'])]
     public function modifclientAction(EntityManagerInterface $em,Request $request, UserPasswordHasherInterface $userPasswordHasher, int $id) : Response
     {
         $usersRepo = $em->getRepository(User::class);
@@ -97,8 +110,7 @@ class UtilisateurController extends AbstractController
             }
             $em->persist($users);
             $em->flush();
-            // do anything else you need here, like send an email
-            return $this->redirectToRoute("app_sandbox_listclient");
+
         }
         if (is_null($users))
         {
@@ -111,7 +123,7 @@ class UtilisateurController extends AbstractController
         return $this->render('Sandbox/utilisateur/modifclient.html.twig',$args);
     }
 
-    #[Route('/deleteclient/{id}',name: '_deleteclient', requirements: ['id'=>'[1-9]\d*'])]
+    #[Route('sandbox/client/deleteclient/{id}',name: 'app_sandbox_deleteclient', requirements: ['id'=>'[1-9]\d*'])]
     public function deleteclientAction(EntityManagerInterface $em, int $id): Response
     {
         $usersRepo = $em->getRepository(User::class);

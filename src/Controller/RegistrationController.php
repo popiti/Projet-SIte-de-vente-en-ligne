@@ -24,9 +24,8 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            $user->setRoles(["ROLE_CLIENT"]);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -47,13 +46,16 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             dump($user);
             // do anything else you need here, like send an email
-
+            $this->addFlash('info',' Vous avez réussi à créer votre compte avec succés !');
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,
                 $request
             );
-
+        }
+        elseif($form->isSubmitted())
+        {
+            $this->addFlash('info','Le login choisi existe déjà ');
         }
 
         return $this->render('registration/register.html.twig', [

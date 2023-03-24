@@ -4,7 +4,7 @@
 {% block contenu %}
     {% if app.user %}
         <h1> Bonjour {{ app.user.nom }} </h1>
-        {% if (app.user.roles[0] == "ROLE_USER") %}
+        {% if (app.user.roles[0] == "ROLE_CLIENT") %}
             <h1> Vous etes un client</h1>
         {% elseif (app.user.roles[0] == "ROLE_ADMIN")%}
             <h1> Vous etes un admin</h1>
@@ -12,8 +12,18 @@
             <h1> Vous etes un super-admin</h1>
         {% endif %}
     {% else %}
-        <h1>Vous êtes anonyme</h1>
+        <h1> Bonjour anonyme</h1>
         <h2><a href="{{ path('app_register') }}">Créer un compte </a></h2>
         <h2><a href="{{ path('app_login') }}">Se connecter </a></h2>
+    {% endif %}
+    {% if app.session.flashBag.has('info') %}
+    <div>
+        <strong>Message d'information</strong>
+        <ul>
+            {% for msg in app.session.flashBag.get('info') %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
 {% endblock %}

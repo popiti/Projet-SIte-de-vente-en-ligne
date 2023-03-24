@@ -26,7 +26,6 @@ class Panier
     #[ORM\Column(nullable: true)]
     private ?int $quantite = null;
 
-
     public function __construct()
     {
         $this->panierId = new ArrayCollection();
@@ -68,6 +67,18 @@ class Panier
     public function setQuantite(?int $quantite): self
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

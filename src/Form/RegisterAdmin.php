@@ -34,8 +34,8 @@ class RegisterAdmin extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'min' => 4,
+                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -43,11 +43,15 @@ class RegisterAdmin extends AbstractType
             ])
             ->add('nom',TextType::class,[
                 'label'=>'Nom',
-                'attr'=>['placeholder'=>'Entrez son nom']
+                'attr'=>[
+                    'placeholder'=>'Entrez son nom',
+                    'pattern'=>'[a-z A-z]*'],
             ])
             ->add('prenom',TextType::class, [
                 'label'=>'Prenom',
-                'attr'=>['placeholder'=>'Entrez son prenom']
+                'attr'=>[
+                    'placeholder'=>'Entrez son prenom',
+                    'pattern'=>'[a-z A-z]*'],
             ])
             ->add('birthdate',DateType::class,[
                 'label'=>'Date de naissance',

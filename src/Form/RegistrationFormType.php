@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('login',TextType::class,[
                 'label'=>'Login',
-                'attr'=>['placeholder'=>'Entrez son login']
+                'attr'=>['placeholder'=>'Entrez son login'],
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
@@ -31,11 +31,11 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Please ',
                     ]),
                     new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'min' => 4,
+                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -43,11 +43,17 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('nom',TextType::class,[
                 'label'=>'Nom',
-                'attr'=>['placeholder'=>'Entrez son nom']
+                'attr'=>[
+                    'placeholder'=>'Entrez son nom',
+                    'pattern'=>'[a-z A-z]*',
+                    ]
             ])
             ->add('prenom',TextType::class, [
                 'label'=>'Prenom',
-                'attr'=>['placeholder'=>'Entrez son prenom']
+                'attr'=>[
+                    'placeholder'=>'Entrez son prenom',
+                    'pattern'=>'[a-z A-z]*',
+                    ]
             ])
             ->add('birthdate',DateType::class,[
                 'label'=>'Date de naissance',

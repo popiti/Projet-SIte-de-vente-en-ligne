@@ -8,10 +8,12 @@
         {{ form_start(registrationAdmin) }}
         {{ form_label(registrationAdmin.login) }}
         <br>
+        {{ form_errors(registrationAdmin.login) }}
         {{ form_widget(registrationAdmin.login) }}
         <br>
         {{ form_label(registrationAdmin.plainPassword) }}
         <br>
+        {{ form_errors(registrationAdmin.plainPassword) }}
         {{ form_widget(registrationAdmin.plainPassword, {
             label: 'Password'
         }) }}

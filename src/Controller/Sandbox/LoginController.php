@@ -4,6 +4,7 @@ namespace App\Controller\Sandbox;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -29,5 +30,10 @@ class LoginController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
+    #[Route(path: '/logoutmsg', name: 'app_logoutmsg')]
+    public function msgLogout(): Response
+    {
+        $this->addFlash('info', "Vous vous êtes déconnecté");
+        return $this->redirectToRoute('app_home');
+    }
 }
