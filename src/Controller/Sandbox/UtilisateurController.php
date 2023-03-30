@@ -95,8 +95,12 @@ class UtilisateurController extends AbstractController
         $usersRepo = $em->getRepository(User::class);
         $users  = $usersRepo->find($id);
         $form = $this->createForm(MonProfile::class, $users);
+        if(!in_array("ROLE_CLIENT",$users->getRoles()))
+        {
+            $this->addFlash('info','Vous n\'avez pas le droit d\'accéder à cette page');
+            return $this->redirectToRoute('app_sandbox_listclient');
+        }
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             if (!is_null($form->get('plainPassword')->getData()))
@@ -118,7 +122,7 @@ class UtilisateurController extends AbstractController
             throw new NotFoundHttpException('utilisateur' . $id . 'not found');
         }
         $args = array(
-            'id'=>$id,'registrationForm'=>$form->createView(),
+            'id'=>$id,'registrationForm'=>$form->createView(),'nom'=>$users->getNom(),
         );
         return $this->render('Sandbox/utilisateur/modifclient.html.twig',$args);
     }

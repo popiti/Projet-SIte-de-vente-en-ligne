@@ -55,7 +55,7 @@ class RegistrationFormType extends AbstractType
                     'pattern'=>'[a-z A-z]*',
                     ]
             ])
-            ->add('birthdate',DateType::class,[
+            ->add('birthdate',BirthdayType::class,[
                 'label'=>'Date de naissance',
                 'format'=>'dd/MM/yyyy',
                 'attr'=>['placeholder'=>'Entrez sa date de naissance']

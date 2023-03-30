@@ -25,33 +25,35 @@ class SuperadminController extends AbstractController
         $form = $this->createForm(RegisterAdmin::class,$user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
+        if ($form->isSubmitted() )
         {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $user->setNom(
-                $form->get('nom')->getData()
-            );
-            $user->setPrenom(
-                $form->get('prenom')->getData()
-            );
-            $user->setBirthdate(
-                $form->get('birthdate')->getData()
-            );
-            $user->setRoles(["ROLE_ADMIN"]);
-            $em->persist($user);
-            $em->flush();
-            dump($user);
+            if ($form->isValid())
+            {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setNom(
+                    $form->get('nom')->getData()
+                );
+                $user->setPrenom(
+                    $form->get('prenom')->getData()
+                );
+                $user->setBirthdate(
+                    $form->get('birthdate')->getData()
+                );
+                $user->setRoles(["ROLE_ADMIN"]);
+                $em->persist($user);
+                $em->flush();
+                dump($user);
+            }
+            else
+            {
+                $this->addFlash('info', 'Ajout incorrect');
+            }
         }
-        if ($form->isSubmitted())
-        {
-            $this->addFlash('info','Ajout incorrect');
-        }
-
         $args = array(
             'registrationAdmin'=>$form->createView()
         );
@@ -65,6 +67,11 @@ class SuperadminController extends AbstractController
         $userRepo = $em->getRepository(User::class);
         $users = $userRepo->find($id);
         $form = $this->createForm(MonProfile::class, $users);
+        if(!in_array("ROLE_ADMIN",$users->getRoles()))
+        {
+            $this->addFlash('info','Vous n\'avez pas le droit d\'accéder à cette page');
+            return $this->redirectToRoute('app_sandbox_listadmin');
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,7 +96,7 @@ class SuperadminController extends AbstractController
             throw new NotFoundHttpException('utilisateur' . $id . 'not found');
         }
         $args = array(
-            'id'=>$id,'registrationForm'=>$form->createView(),
+            'id'=>$id,'registrationForm'=>$form->createView(),'nom'=>$users->getNom(),
             );
         return $this->render('/superadmin/modifadmin.html.twig', $args);
     }

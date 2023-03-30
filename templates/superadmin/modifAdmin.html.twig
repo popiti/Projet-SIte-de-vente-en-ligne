@@ -3,7 +3,7 @@
 {% block title %} Profile {% endblock %}
 
 {% block contenu %}
-    <h1 class = "centrer">Modification Admin {{ app.user.nom }}</h1>
+    <h1 class = "centrer">Modification Admin {{ nom }}</h1>
     <div class = "centrer">
         {{ form_start(registrationForm) }}
         {{ form_label(registrationForm.login) }}

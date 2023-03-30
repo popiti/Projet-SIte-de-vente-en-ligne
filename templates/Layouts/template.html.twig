@@ -4,35 +4,13 @@
     {% if app.user %}
         <header>
         <nav>
-            <ul>
-                <li><a href="{{ path('app_home') }}">Page d'acceuil</a></li>
-            {% if (app.user.roles[0]== "ROLE_ADMIN") %}
-                <li><a href="{{ path('app_sandbox_listclient') }}">Users</a></li>
-                <li><a href="https://fr.wikipedia.org/wiki/The_Truman_Show" target="_blank">Lien Externe</a>   </li>
-            {% endif %}
-            {% if (app.user.roles[0]== "ROLE_SUPERADMIN") %}
-                <li><a href="{{ path('app_sandbox_listadmin') }}">Admins</a></li>
-            {% endif %}
-            {% if (app.user.roles[0]== "ROLE_CLIENT") or (app.user.roles[0]== "ROLE_ADMIN")  %}
-                <li><a href="{{ path('panier_list') }}">Mon Panier </a></li>
-                <li><a href="{{ path('app_sandbox_listarticle') }}">Liste des articles</a></li>
-            {% endif %}
-                <li><a href="{{ path('app_sandbox_profile',{id:app.user.id}) }}">Profil</a></li>
-                <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>
-            </ul>
+            {{ render(controller('App\\Controller\\Sandbox\\LoginController::menu')) }}
         </nav>
     </header>
     {% endif %}
 
     <div>{# Ajout d'un flash #}
-        {% if app.session.flashBag.has('info') %}
-            <strong>Message d'information</strong>
-            <ul>
-                {% for msg in app.session.flashBag.get('info') %}
-                    <li>{{ msg }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        {% block contenu %}Message par défaut{% endblock %}
+        {% include 'Layouts/flash.html.twig' %}
     </div>
+    {% block contenu %}Message par défaut{% endblock %}
 {% endblock %}

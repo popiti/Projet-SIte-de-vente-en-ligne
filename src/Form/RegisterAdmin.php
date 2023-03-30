@@ -53,7 +53,7 @@ class RegisterAdmin extends AbstractType
                     'placeholder'=>'Entrez son prenom',
                     'pattern'=>'[a-z A-z]*'],
             ])
-            ->add('birthdate',DateType::class,[
+            ->add('birthdate',BirthdayType::class,[
                 'label'=>'Date de naissance',
                 'format'=>'dd/MM/yyyy',
                 'attr'=>['placeholder'=>'Entrez sa date de naissance']

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,7 +39,7 @@ class MonProfile extends AbstractType
                 'required'=>false,
                 'attr'=>['placeholder'=>'Entrez son prenom']
             ])
-            ->add('birthdate',DateType::class,[
+            ->add('birthdate',BirthdayType::class,[
                 'label'=>'Date de naissance',
                 'format'=>'dd/MM/yyyy',
                 'attr'=>['placeholder'=>'Entrez sa date de naissance']

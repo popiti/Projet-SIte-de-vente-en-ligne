@@ -21,7 +21,6 @@ class PanierController extends AbstractController
         {
             $this->addFlash('info','Le panier est vide');
         }
-        $total = 0;
 
         $args = array('paniers'=> $paniers,);
         return $this->render('/panier/panier.html.twig', $args);
