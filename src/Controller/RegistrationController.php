@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginAuthenticator;
-use Doctrine\DBAL\Types\TextType;
+use App\Service\PasswordStrength;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,25 +13,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use function Sodium\add;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register( Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, LoginAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $lienPanier = new PasswordStrength();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles(["ROLE_CLIENT"]);
+            $pswdStrength = $lienPanier->pswdStrength(
+                $form->get('plainPassword')->getData()
+            );
+            $this->addFlash('info',$pswdStrength);
+            $entityManager->flush();
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+
             $user->setNom(
                 $form->get('nom')->getData()
             );
@@ -55,7 +60,7 @@ class RegistrationController extends AbstractController
         }
         elseif($form->isSubmitted())
         {
-            $this->addFlash('info','Le login choisi existe déjà ');
+            $this->addFlash('info','Votre compte n\'a pas pu etre créé ');
         }
 
         return $this->render('registration/register.html.twig', [

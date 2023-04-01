@@ -19,10 +19,24 @@
             <td> {{ user.login }} </td>
             <td> {{ user.nom }} </td>
             <td> {{ user.prenom }} </td>
-            <td> {{ user.roles[0] }}                  </td>
+            <td> {% if "ROLE_CLIENT" in user.roles %}
+                    ROLE_CLIENT
+                {% endif %}
+                {% if "ROLE_ADMIN" in user.roles %}
+                    ROLE_ADMIN
+                {% endif %}
+                {% if "ROLE_SUPERADMIN" in user.roles %}
+                    ROLE_SUPERADMIN
+                {% endif %}
+            </td>
             <td> {{ user.birthdate | date('d-m-Y') }} </td>
             <td> <a class ="button button2" href="{{ path('app_sandbox_modifclient',{id:user.id}) }}">Modifier</a>  </td>
-            <td> <a class ="button button1" href="{{ path('app_sandbox_deleteclient',{id:user.id}) }}">Suppression</a>   </td>
+            <td> {% if "ROLE_CLIENT" in user.roles or "ROLE_ADMIN" in user.roles %}
+                    {% if app.user.id != user.id %}
+                    <a class ="button button1" href="{{ path('app_sandbox_deleteclient',{id:user.id}) }}">Suppression</a>
+                    {% endif %}
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

@@ -28,10 +28,12 @@
         <br>
         {{ form_label(registrationForm.nom) }}
         <br>
+        {{ form_errors(registrationForm.nom) }}
         {{ form_widget(registrationForm.nom) }}
         <br>
         {{ form_label(registrationForm.prenom) }}
         <br>
+        {{ form_errors(registrationForm.prenom) }}
         {{ form_widget(registrationForm.prenom) }}
         <br>
         {{ form_label(registrationForm.birthdate) }}

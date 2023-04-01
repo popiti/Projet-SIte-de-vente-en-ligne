@@ -1,0 +1,12 @@
+
+    {% if "ROLE_CLIENT" in app.user.roles %}
+        <img class="headerimg" src="/image/client.jpg" alt="client">
+    {% endif %}
+    {% if "ROLE_ADMIN" in app.user.roles %}
+        <img class = "headerimg" src="/image/admin.jpg" alt="admin">
+    {% endif %}
+    {% if "ROLE_SUPERADMIN" in app.user.roles %}
+        <img class = "headerimg" src="/image/superadmin.jpg" alt="superadmin">
+{#        {% else %}#}
+    {% endif  %}
+

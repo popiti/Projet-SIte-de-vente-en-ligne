@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Service\PasswordStrength;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +29,12 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $login = $request->request->get('login', '');
+        $request->getSession()->getFlashBag()->clear();
+        $paswdStrength = new PasswordStrength();
+        $message =$paswdStrength->pswdStrength($request->request->get('password',''));
+        $request->getSession()->getFlashBag()->add('info',$message);
 
+        $login = $request->request->get('login', '');
         $request->getSession()->set(Security::LAST_USERNAME, $login);
 
         return new Passport(

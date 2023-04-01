@@ -8,9 +8,9 @@
         <li><a href="{{ path('app_sandbox_listadmin') }}">Admins</a></li>
     {% endif %}
     {% if (is_granted("ROLE_CLIENT")) or (is_granted("ROLE_ADMIN"))  %}
-        <li>nb article : {{ nb }}</li>
-        <li><a href="{{ path('panier_list') }}">Mon Panier </a></li>
+        <li>Panier actuel : {{ nb }} articles</li>
         <li><a href="{{ path('app_sandbox_listarticle') }}">Liste des articles</a></li>
+        <li><a href="{{ path('panier_list') }}">Mon Panier </a></li>
     {% endif %}
     <li><a href="{{ path('app_sandbox_profile',{id:app.user.id}) }}">Profil</a></li>
     <li><a href="{{ path('app_logout') }}">Deconnexion</a></li>

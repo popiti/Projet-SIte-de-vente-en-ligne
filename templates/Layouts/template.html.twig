@@ -2,6 +2,7 @@
 
 {% block body %}
     {% if app.user %}
+        {% include 'Layouts/header.html.twig' %}
         <header>
         <nav>
             {{ render(controller('App\\Controller\\Sandbox\\LoginController::menu')) }}

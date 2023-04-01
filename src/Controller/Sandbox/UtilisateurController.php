@@ -69,7 +69,7 @@ class UtilisateurController extends AbstractController
     public function listClient(EntityManagerInterface $em) : Response
     {
         $usersRepo = $em->getRepository(User::class);
-        $users = $usersRepo->findByRole("ROLE_CLIENT");
+        $users = $usersRepo->findAll();
 
         $args=array(
         'users'=>$users
@@ -114,7 +114,7 @@ class UtilisateurController extends AbstractController
             }
             $em->persist($users);
             $em->flush();
-
+            return $this->redirectToRoute('app_sandbox_listclient');
         }
         if (is_null($users))
         {
@@ -128,11 +128,20 @@ class UtilisateurController extends AbstractController
     }
 
     #[Route('sandbox/client/deleteclient/{id}',name: 'app_sandbox_deleteclient', requirements: ['id'=>'[1-9]\d*'])]
-    public function deleteclientAction(EntityManagerInterface $em, int $id): Response
+    public function deleteclientAction(Request $request,EntityManagerInterface $em, int $id): Response
     {
         $usersRepo = $em->getRepository(User::class);
         $users = $usersRepo->find($id);
-
+        if(in_array("ROLE_SUPERADMIN",$users->getRoles()))
+        {
+            $this->addFlash('info','Vous n\'avez pas le droit d\'accès');
+            return $this->redirectToRoute('app_sandbox_listclient');
+        }
+        if(!strcmp($this->getUser()->getUserIdentifier(),$users->getLogin()))
+        {
+            $this->addFlash('info','Vous n\'avez pas le droit de vous supprimer');
+            return $this->redirectToRoute('app_sandbox_listclient');
+        }
         $em->remove($users);
         $em->flush();
         return $this->redirectToRoute('app_sandbox_listclient');

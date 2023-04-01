@@ -19,7 +19,11 @@
                 <td> {{ user.login }} </td>
                 <td> {{ user.nom }} </td>
                 <td> {{ user.prenom }} </td>
-                <td> {{ user.roles[0] }}                  </td>
+                <td>
+                    {% if "ROLE_ADMIN" in user.roles %}
+                    ROLE_ADMIN
+                    {% endif %}
+                </td>
                 <td> {{ user.birthdate | date ('d-m-Y') }} </td>
                 <td> <a class ="button button2" href="{{ path('app_superadmin_modifadmin',{id:user.id}) }}">Modifier</a>  </td>
                 <td> <a class ="button button1" href="{{ path('app_superadmin_deleteadmin',{id:user.id}) }}">Suppression</a>   </td>

@@ -12,7 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name:"i23_utilisateur")]
 #[UniqueEntity(fields: ['login'], message: 'Ce nom d\'utilisateur existe déjà')]
+#[UniqueEntity(fields: ['nom','prenom'], message :"Le couple nom prenom existe déjà")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
