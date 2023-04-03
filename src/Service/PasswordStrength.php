@@ -26,7 +26,7 @@ class PasswordStrength
         {
                 $message="Le mot de passe est faible veuillez changez votre mot de passe";
         }
-        else if(!(strcmp($pswd,"qwerty")) || !(strcmp($pswd,"azerty")) )
+        else if(!(strcmp($pswd,"qwerty")) || !(strcmp($pswd,"azerty")) || !(strcmp($pswd,"password")) || !(strcmp($pswd,"motdepasse")) )
         {
 //            dd($tmp);
             $message="Veuillez changer de mot de passe et n'utilisez pas des mots de passe simples comme azerty qwerty ou une série de nombre";

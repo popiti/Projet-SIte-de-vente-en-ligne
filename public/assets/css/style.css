@@ -54,8 +54,8 @@ nav ul{
 
 nav li{
     float: left;
-    width: 25%;/*100% divisé par le nombre d'éléments de menu*/
-text-align: center;/*Centre le texte dans les éléments de menu*/
+    width: 12.5%;/*100% divisé par le nombre d'éléments de menu*/
+    text-align: center;/*Centre le texte dans les éléments de menu*/
 }
 
 /*Evite que le menu n'ait une hauteur nulle*/

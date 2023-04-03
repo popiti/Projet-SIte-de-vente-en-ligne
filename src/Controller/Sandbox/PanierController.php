@@ -71,12 +71,10 @@ class PanierController extends AbstractController
 
         foreach ($paniers as $panier) {
             $em->remove($panier);
-        }
-        if (!$paniers)
-        {
             $this->addFlash('info', 'Félicitation ! Commande réussi');
         }
         $em->flush();
+
         return $this->redirectToRoute('panier_list');
     }
 }
