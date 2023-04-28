@@ -9,7 +9,8 @@
         <th> Prenom             </th>
         <th> Role               </th>
         <th> Date de Naissance  </th>
-        <th> Modification       </th>
+{#        <th> Modification       </th>  J'avais ajouté la possibilité de changer les coordonnées d'un utilisateur en appelant une action modifclientAction
+                                          dans le controller User #}
         <th> Suppression        </th>
     </tr>
     </thead>
@@ -30,14 +31,16 @@
                 {% endif %}
             </td>
             <td> {{ user.birthdate | date('d-m-Y') }} </td>
-            <td> <a class ="button button2" href="{{ path('app_sandbox_modifclient',{id:user.id}) }}">Modifier</a>  </td>
+{#            <td> <a class ="button button2" href="{{ path('app_sandbox_modifclient',{id:user.id}) }}">Modifier</a>  </td>#}
             <td> {% if "ROLE_CLIENT" in user.roles or "ROLE_ADMIN" in user.roles %}
                     {% if app.user.id != user.id %}
                     <a class ="button button1" href="{{ path('app_sandbox_deleteclient',{id:user.id}) }}">Suppression</a>
                     {% endif %}
                 {% endif %}
+                <br>
             </td>
         </tr>
+
     {% endfor %}
     </tbody>
 </table>

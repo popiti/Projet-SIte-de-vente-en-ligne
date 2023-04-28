@@ -6,16 +6,13 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Panier;
 use App\Form\AddPanierType;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/sandbox', name: 'app_sandbox')]
@@ -31,93 +28,79 @@ class ArticleController extends AbstractController
 
         $forms = array();
         $views = array();
-        ///$article=new Article();
         foreach ($articles as $article) {
             $panier = $panierRepo->findOneBy(['userId' => $this->getUser(), 'articleId' => $article->getId()]);
-            if ($panier) {
+            if ($panier)
+            {
                 $min = 0 - $panier->getQuantite();
-                ///dd(array_values(range($min,10)));
-            } else {
+            }
+            else
+            {
                 $min = 0;
             }
+
             $max = $article->getQuantite();
-            $form = $this->createFormBuilder()
+            $forms[] = $this->createFormBuilder()
                 ->add('qte', ChoiceType::class, array('choices' => range($min, $max),
-                    'choice_label' => function ($value)
-                    {
-                        return $value;
+                    'choice_label' => function ($value) {
+                        return $value; //pour eviter confusion entre index du tableau et valeur de la quantité
                     },
                 ))
                 ->add('articleId', HiddenType::class, ['data' => $article->getId()])
                 ->add('Modifier', SubmitType::class)
                 ->getForm();
-            $forms[] = $form;
-            $views[$article->getId()] = $form->createView();
+            $views[$article->getId()] = end($forms)->createView(); //On récupère le dernier formulaire envoyé pour créer la vue
         }
-        foreach ($forms as $form)
-        {
-            $form->handleRequest($request);
-            if ($form->isSubmitted())
-            {
-                $articless = $articleRepo->find($form->get('articleId')->getData());
+            foreach ($forms as $form) {
 
-                if($form->get('qte')->getData()>0)
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) //Ajout du form-> isvalid() : Prend en compte que le formulaire envoyé est le meme pour tous les autres donc si on n'ajoute pas la validité du formulaire il execute quand meme la requete au premier formulaire sans verifier si ce qu'a été envoyé est valide
                 {
-                   // dd($form->getData());
-                    $paniertmp = $panierRepo->findOneBy(['articleId'=>$form->get('articleId')->getData(),'userId'=>$this->getUser()]);
+                    $qteForm = $form->get('qte')->getData();
+                    $articless = $articleRepo->find($form->get('articleId')->getData());
+                    $panier = new Panier();
+                    if ($qteForm > 0) {
+                        $paniertmp = $panierRepo->findOneBy(['articleId' => $form->get('articleId')->getData(), 'userId' => $this->getUser()]);
+                        if ($paniertmp) {
+                            $total = $paniertmp->getQuantite() + $form->get('qte')->getData();
+                            $paniertmp->setQuantite($total);
+                            $em->persist($paniertmp);
+                        } else {
+                            $panier->setQuantite($form->get('qte')->getData());
+                            $panier->setArticleId($articless);
+                            $panier->setUserId($this->getUser());
 
-                    if($paniertmp)
-                    {
-                        $total = $paniertmp->getQuantite()+$form->get('qte')->getData();
-                        $paniertmp->setQuantite($total);
-                        $em->persist($paniertmp);
+                            $em->persist($panier);
+                        }
+                        $somArticle = $articless->getQuantite() - $form->get('qte')->getData();
+                        $articless->setQuantite($somArticle);
+
+                        $em->persist($articless);
+                    } elseif ($qteForm < 0) {
+                        $paniertmp = $panierRepo->findOneBy(['userId' => $this->getUser(), 'articleId' => $form->get('articleId')->getData()]);
+                        $articleqte = $articless->getQuantite() - $form->get('qte')->getData();
+                        $total = $paniertmp->getQuantite() + $form->get('qte')->getData();
+                        if ($total == 0) {
+                            $em->remove($paniertmp);
+                        } else {
+                            $paniertmp->setQuantite($total);
+                            $em->persist($paniertmp);
+                        }
+                        $articless->setQuantite($articleqte);
+
+                        $em->persist($articless);
                     }
-
-                    else
-                    {
-                        $panier = new Panier();
-                        $panier->setQuantite($form->get('qte')->getData());
-                        $panier->setArticleId($articless);
-                        $panier->setUserId($this->getUser());
-
-                        $em->persist($panier);
-                    }
-                    $somArticle = $articless->getQuantite()-$form->get('qte')->getData();
-                    $articless->setQuantite($somArticle);
-
-                    $em->persist($articless);
+                    $em->flush();
+                    return $this->redirectToRoute('app_sandbox_listarticle');
                 }
-
-                elseif($form->get('qte')->getData()<0)
-                {
-                    $paniertmp = $panierRepo->findOneBy(['userId'=>$this->getUser(),'articleId'=>$form->get('articleId')->getData()]);
-                    $articleqte = $articless->getQuantite()-$form->get('qte')->getData();
-                    $total = $paniertmp->getQuantite()+$form->get('qte')->getData();
-
-                    if($total == 0)
-                    {
-                        $em->remove($paniertmp);
-                    }
-
-                    else
-                    {
-                        $paniertmp->setQuantite($total);
-                        $em->persist($paniertmp);
-                    }
-                    $articless->setQuantite($articleqte);
-
-                    $em->persist($articless);
-                }
-                $em->flush();
-                return $this->redirectToRoute('app_sandbox_listarticle');
             }
-        }
 
         $args = array(
             'articles' => $articles,
             'views' => $views,
         );
-        return $this->render('article/index.html.twig', $args);
+        return $this->render('article/listArticle.html.twig', $args);
     }
 
     #[Route('/addarticle', name: '_addarticle')]
@@ -149,6 +132,4 @@ class ArticleController extends AbstractController
         );
         return $this->render('article/addarticle.html.twig',$args);
     }
-
-
 }

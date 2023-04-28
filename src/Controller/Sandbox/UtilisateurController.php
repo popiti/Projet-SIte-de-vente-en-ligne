@@ -76,56 +76,44 @@ class UtilisateurController extends AbstractController
         );
         return $this->render('sandbox/utilisateur/client.html.twig',$args);
     }
-
-    #[Route('superadmin/listadmin',name: 'app_sandbox_listadmin')]
-    public function listAdmin(EntityManagerInterface $em) : Response
-    {
-        $usersRepo = $em->getRepository(User::class);
-        $users = $usersRepo->findByRole("ROLE_ADMIN");
-
-        $args=array(
-            'users'=>$users
-        );
-        return $this->render('superadmin/admin.html.twig',$args);
-    }
-
-    #[Route('sandbox/client/modifclient/{id}', name: 'app_sandbox_modifclient', requirements : ['id' => '[1-9]\d*'])]
-    public function modifclientAction(EntityManagerInterface $em,Request $request, UserPasswordHasherInterface $userPasswordHasher, int $id) : Response
-    {
-        $usersRepo = $em->getRepository(User::class);
-        $users  = $usersRepo->find($id);
-        $form = $this->createForm(MonProfile::class, $users);
-        if(!in_array("ROLE_CLIENT",$users->getRoles()))
-        {
-            $this->addFlash('info','Vous n\'avez pas le droit d\'accéder à cette page');
-            return $this->redirectToRoute('app_sandbox_listclient');
-        }
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            if (!is_null($form->get('plainPassword')->getData()))
-            {
-                $users->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $users,
-                        $form->get('plainPassword')->getData()
-                    )
-                );
-            }
-            $em->persist($users);
-            $em->flush();
-            return $this->redirectToRoute('app_sandbox_listclient');
-        }
-        if (is_null($users))
-        {
-            //$this->addFlash('info', 'suppression film' . $id . 'reussie');
-            throw new NotFoundHttpException('utilisateur' . $id . 'not found');
-        }
-        $args = array(
-            'id'=>$id,'registrationForm'=>$form->createView(),'nom'=>$users->getNom(),
-        );
-        return $this->render('Sandbox/utilisateur/modifclient.html.twig',$args);
-    }
+    // Action qui permet d'acceder à un utilisateur et de modifier ses données dans le formulaire comme son login, son mot de passe, son nom/prenom et sa date de naissance
+//    #[Route('sandbox/client/modifclient/{id}', name: 'app_sandbox_modifclient', requirements : ['id' => '[1-9]\d*'])]
+//    public function modifclientAction(EntityManagerInterface $em,Request $request, UserPasswordHasherInterface $userPasswordHasher, int $id) : Response
+//    {
+//        $usersRepo = $em->getRepository(User::class);
+//        $users  = $usersRepo->find($id);
+//        $form = $this->createForm(MonProfile::class, $users);
+//        if(!in_array("ROLE_CLIENT",$users->getRoles()))
+//        {
+//            $this->addFlash('info','Vous n\'avez pas le droit d\'accéder à cette page');
+//            return $this->redirectToRoute('app_sandbox_listclient');
+//        }
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            // encode the plain password
+//            if (!is_null($form->get('plainPassword')->getData()))
+//            {
+//                $users->setPassword(
+//                    $userPasswordHasher->hashPassword(
+//                        $users,
+//                        $form->get('plainPassword')->getData()
+//                    )
+//                );
+//            }
+//            $em->persist($users);
+//            $em->flush();
+//            return $this->redirectToRoute('app_sandbox_listclient');
+//        }
+//        if (is_null($users))
+//        {
+//            //$this->addFlash('info', 'suppression film' . $id . 'reussie');
+//            throw new NotFoundHttpException('utilisateur' . $id . 'not found');
+//        }
+//        $args = array(
+//            'id'=>$id,'registrationForm'=>$form->createView(),'nom'=>$users->getNom(),
+//        );
+//        return $this->render('Sandbox/utilisateur/modifclient.html.twig',$args);
+//    }
 
     #[Route('sandbox/client/deleteclient/{id}',name: 'app_sandbox_deleteclient', requirements: ['id'=>'[1-9]\d*'])]
     public function deleteclientAction(Request $request,EntityManagerInterface $em, int $id): Response

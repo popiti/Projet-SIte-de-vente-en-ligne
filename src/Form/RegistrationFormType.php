@@ -45,14 +45,14 @@ class RegistrationFormType extends AbstractType
                 'label'=>'Nom',
                 'attr'=>[
                     'placeholder'=>'Entrez son nom',
-                    'pattern'=>'[a-z A-z]*',
+                    'pattern'=>'[a-z A-z à é ù è û ê â]*',
                     ]
             ])
             ->add('prenom',TextType::class, [
                 'label'=>'Prenom',
                 'attr'=>[
                     'placeholder'=>'Entrez son prenom',
-                    'pattern'=>'[a-z A-z]*',
+                    'pattern'=>'[a-z A-z à é ù è û ê â]*',
                     ]
             ])
             ->add('birthdate',BirthdayType::class,[

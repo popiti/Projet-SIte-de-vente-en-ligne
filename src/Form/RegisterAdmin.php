@@ -4,13 +4,11 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -45,13 +43,13 @@ class RegisterAdmin extends AbstractType
                 'label'=>'Nom',
                 'attr'=>[
                     'placeholder'=>'Entrez son nom',
-                    'pattern'=>'[a-z A-z]*'],
+                    'pattern'=>'[a-z A-z à é ù è û ê â]*'],
             ])
             ->add('prenom',TextType::class, [
                 'label'=>'Prenom',
                 'attr'=>[
                     'placeholder'=>'Entrez son prenom',
-                    'pattern'=>'[a-z A-z]*'],
+                    'pattern'=>'[a-z A-z à é ù è û ê â]*'],
             ])
             ->add('birthdate',BirthdayType::class,[
                 'label'=>'Date de naissance',

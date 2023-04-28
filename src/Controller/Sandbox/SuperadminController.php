@@ -61,6 +61,17 @@ class SuperadminController extends AbstractController
         return $this->render('superadmin/createAdmin.html.twig',$args);
     }
 
+    #[Route('/listadmin',name: '_listadmin')]
+    public function listAdmin(EntityManagerInterface $em) : Response
+    {
+        $usersRepo = $em->getRepository(User::class);
+        $users = $usersRepo->findByRole("ROLE_ADMIN");
+
+        $args=array(
+            'users'=>$users
+        );
+        return $this->render('superadmin/admin.html.twig',$args);
+    }
     #[Route('/admin/modif/{id}', name: '_modifadmin',requirements: ['id' => '[1-9]\d*'])]
     public function modifAdminAction(EntityManagerInterface $em, Request $request,UserPasswordHasherInterface $userPasswordHasher, int $id): Response
     {

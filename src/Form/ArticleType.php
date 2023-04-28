@@ -17,7 +17,7 @@ class ArticleType extends AbstractType
             ->add('nom',TextType::class,array(
                     'label'=>'Nom du produit',
                     'attr'=>
-                    ['pattern'=>'[a-z A-z]*'],
+                    ['pattern'=>'[a-z A-z à é ù è û ê â]*'],
             ))
             ->add('quantite',IntegerType::class,array(
                     'label'=>'Quantite',
